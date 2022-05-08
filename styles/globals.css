@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Epilogue-ExtraBold";
+  src: url("../font/Epilogue-ExtraBold.ttf") format("truetype");
+}
+
+html {
+  font-family: "Epilogue-ExtraBold", sans-serif;
+}
