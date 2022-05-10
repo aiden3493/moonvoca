@@ -19,7 +19,7 @@ const Home: NextPage = () => {
     const localStorage = window.localStorage;
     const StorageData = { ...localStorage };
 
-    let data: any = [];
+    let data: Vocabulary[] = [];
     for (let key in StorageData) {
       const datas = JSON.parse(StorageData[key]);
       data = [
