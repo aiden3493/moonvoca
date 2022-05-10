@@ -9,4 +9,20 @@
 
 html {
   font-family: "Epilogue-ExtraBold", sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

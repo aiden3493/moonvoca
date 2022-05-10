@@ -3,16 +3,37 @@ import Head from "next/head";
 import Footer from "../components/footer";
 import VocabularyBox from "../components/vocabularyBox";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Home: NextPage = () => {
-  const Voca = [
-    { name: "Name", description: "first vocabulary", words: 20 },
-    { name: "Name", description: "first vocabulary", words: 20 },
-    { name: "Name", description: "first vocabulary", words: 20 },
-    { name: "Name", description: "first vocabulary", words: 20 },
-    { name: "Name", description: "first vocabulary", words: 20 },
-    { name: "Name", description: "first vocabulary", words: 20 },
-  ];
+  type Vocabulary = {
+    name: string;
+    description: string;
+    wordNum: number;
+    words: object;
+  };
+
+  const [Voca, setVoca] = useState<Vocabulary[]>([]);
+
+  useEffect(() => {
+    const localStorage = window.localStorage;
+    const StorageData = { ...localStorage };
+
+    let data: any = [];
+    for (let key in StorageData) {
+      const datas = JSON.parse(StorageData[key]);
+      data = [
+        ...data,
+        {
+          name: key,
+          description: datas.VocaDescription,
+          wordNum: datas.wordNum,
+          words: datas.words,
+        },
+      ];
+    }
+    setVoca(data);
+  }, []);
 
   return (
     <div className="w-full h-screen">
@@ -44,7 +65,7 @@ const Home: NextPage = () => {
               index={index}
               name={voca.name}
               description={voca.description}
-              words={voca.words}
+              words={voca.wordNum}
             />
           ))}
         </div>

@@ -10,14 +10,10 @@ export default function VocabularyBox(props: any) {
     "#5500ff",
   ];
 
-  console.log(props.index);
-
   const color =
     props.index < 6
       ? VOCABULARY_BACKGROUND_COLOR[props.index]
       : VOCABULARY_BACKGROUND_COLOR[5];
-
-  console.log(color);
 
   return (
     <div
