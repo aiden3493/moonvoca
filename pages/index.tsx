@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 
 const Home: NextPage = () => {
   type Vocabulary = {
-    name: string;
-    description: string;
+    VocaName: string;
+    VocaDescription: string;
     wordNum: number;
     words: object;
   };
@@ -24,29 +24,38 @@ const Home: NextPage = () => {
   const handleDeleteVocabulary = (vocaName: String) => {
     setDeleteVocabularyModal(true);
     setCurrentDeleteVocabulary(vocaName);
-    console.log(currentDeleteVocabulary);
   };
 
   const deleteVocabulary = (name: string) => {
     const localStorage = window.localStorage;
-    localStorage.removeItem(name);
+    const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
 
-    const StorageData = { ...localStorage };
+    const storageDataArray = Object.keys(StorageData);
+
+    const currentDeletingVocabularyIndex = storageDataArray.findIndex(
+      (element) => StorageData[element].VocaName === name
+    );
+
+    delete StorageData[storageDataArray[currentDeletingVocabularyIndex]];
+
+    StorageData === {}
+      ? localStorage.removeItem("Vocabularys")
+      : localStorage.setItem("Vocabularys", JSON.stringify(StorageData));
 
     let data: Vocabulary[] = [];
+
     for (let key in StorageData) {
-      const datas = JSON.parse(StorageData[key]);
-      datas.VocaName
-        ? (data = [
-            ...data,
-            {
-              name: key,
-              description: datas.VocaDescription,
-              wordNum: datas.wordNum,
-              words: datas.words,
-            },
-          ])
-        : null;
+      const datas = StorageData[key];
+
+      data = [
+        ...data,
+        {
+          VocaName: datas.VocaName,
+          VocaDescription: datas.VocaDescription,
+          wordNum: datas.wordNum,
+          words: datas.words,
+        },
+      ];
     }
 
     setVoca(data);
@@ -55,23 +64,24 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     const localStorage = window.localStorage;
-    const StorageData = { ...localStorage };
-    console.log(StorageData);
+    const StorageData = localStorage.getItem("Vocabularys")
+      ? JSON.parse(`${localStorage.getItem("Vocabularys")}`)
+      : {};
 
     let data: Vocabulary[] = [];
+
     for (let key in StorageData) {
-      const datas = JSON.parse(StorageData[key]);
-      datas.VocaName
-        ? (data = [
-            ...data,
-            {
-              name: key,
-              description: datas.VocaDescription,
-              wordNum: datas.wordNum,
-              words: datas.words,
-            },
-          ])
-        : null;
+      const datas = StorageData[key];
+
+      data = [
+        ...data,
+        {
+          VocaName: datas.VocaName,
+          VocaDescription: datas.VocaDescription,
+          wordNum: datas.wordNum,
+          words: datas.words,
+        },
+      ];
     }
 
     setVoca(data);
@@ -105,8 +115,8 @@ const Home: NextPage = () => {
             <VocabularyBox
               key={index}
               index={index}
-              name={voca.name}
-              description={voca.description}
+              name={voca.VocaName}
+              description={voca.VocaDescription}
               words={voca.wordNum}
               handleDeleteVocabulary={handleDeleteVocabulary}
             />
