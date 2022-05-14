@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Router from "next/router";
 
 export default function VocabularyBox(props: any) {
   //get props from parent component of index, color, name, description, words
@@ -11,6 +12,17 @@ export default function VocabularyBox(props: any) {
     "#0044ff",
     "#5500ff",
   ];
+
+  const editVocabulary = (index: number) => {
+    Router.replace({
+      pathname: "/edit",
+      query: {
+        name: props.name,
+        description: props.description,
+        index: index,
+      },
+    });
+  };
 
   const color =
     props.index < 6
@@ -25,10 +37,13 @@ export default function VocabularyBox(props: any) {
       <div className="absolute left-4 top-[1.65rem] w-[289px] h-[87px] text-[24px] tracking-[1px] leading-[25px] text-[#ffffff] whitespace-pre-wrap">
         <h1>{props.name}</h1>
         <h1>{props.description}</h1>
-        <h1>{`${props.words} words`}</h1>
+        <h1>{`${props.wordsNum} words`}</h1>
       </div>
 
-      <div className="cursor-pointer flex justify-center items-center w-[33px] h-[33px] absolute bg-[#ffffff] left-[255px] top-[13px] rounded-[10px]">
+      <div
+        onClick={() => editVocabulary(props.index)}
+        className="cursor-pointer flex justify-center items-center w-[33px] h-[33px] absolute bg-[#ffffff] left-[255px] top-[13px] rounded-[10px]"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"

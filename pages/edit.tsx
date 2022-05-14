@@ -1,10 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Footer from "../components/footer";
-import React, { useState } from "react";
-import Router from "next/router";
+import React, { useEffect, useState } from "react";
+import Router, { useRouter } from "next/router";
 
-const CreateVocabulary: NextPage = () => {
+const EditVocabulary: NextPage = () => {
+  const query = useRouter().query;
+
+  let wordsQuery;
+  const localStorage = window.localStorage;
+  const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
+  wordsQuery = StorageData[`${query.index}`].words;
+
   type word = {
     word: string;
     description: string;
@@ -16,10 +23,10 @@ const CreateVocabulary: NextPage = () => {
   };
 
   const [VocaSetting, setVocaSetting] = useState<mainSet>({
-    name: "",
-    description: "",
+    name: `${query.name}`,
+    description: `${query.description}`,
   });
-  const [words, setWords] = useState<word[]>([]);
+  const [words, setWords] = useState<word[]>(wordsQuery);
 
   const addWord = (e: any) => {
     e.preventDefault();
@@ -27,23 +34,14 @@ const CreateVocabulary: NextPage = () => {
   };
 
   const onWordChange = (e: any, index: number) => {
-    const currentData = words;
-    const pushData = {
-      word: e.target.value,
-      description: currentData[index].description,
-    };
-    currentData[index] = pushData;
+    const currentData = [...words];
+    currentData[index].word = e.target.value;
 
     setWords(currentData);
   };
   const onDescriptionChange = (e: any, index: number) => {
-    const currentData = words;
-
-    const pushData = {
-      word: currentData[index].word,
-      description: e.target.value,
-    };
-    currentData[index] = pushData;
+    const currentData = [...words];
+    currentData[index].description = e.target.value;
 
     setWords(currentData);
   };
@@ -114,7 +112,7 @@ const CreateVocabulary: NextPage = () => {
     return true;
   };
 
-  const makeVoca = () => {
+  const saveVoca = () => {
     const localStorage = window.localStorage;
 
     const data = {
@@ -124,24 +122,19 @@ const CreateVocabulary: NextPage = () => {
       words: words,
     };
 
-    const currentData = localStorage.getItem("Vocabularys")
-      ? JSON.parse(`${localStorage.getItem("Vocabularys")}`)
-      : {};
-
-    const pushData = {
-      ...currentData,
-      [Object.keys(currentData).length]: data,
+    const currentData = {
+      ...JSON.parse(`${localStorage.getItem("Vocabularys")}`),
     };
 
-    localStorage.setItem("Vocabularys", JSON.stringify(pushData));
+    currentData[`${query.index}`] = data;
+
+    localStorage.setItem("Vocabularys", JSON.stringify(currentData));
     Router.push("/");
   };
 
-  const onMakeButtonClick = (e: any) => {
+  const onSaveButtonClick = (e: any) => {
     e.preventDefault();
-    console.log(words);
-
-    checkSettings() ? makeVoca() : null;
+    checkSettings() ? saveVoca() : null;
   };
 
   const deleteWord = (index: number) => {
@@ -152,7 +145,7 @@ const CreateVocabulary: NextPage = () => {
   return (
     <div className="w-full h-screen">
       <Head>
-        <title>MoonJunSik</title>
+        <title>Edit</title>
         <meta name="description" content="Made by AIDEN" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -178,7 +171,7 @@ const CreateVocabulary: NextPage = () => {
 
         <div className="w-[390px] h-full bg-white pt-[56px] px-[24px] pb-[24px] overflow-scroll">
           <h1 className="text-[40px] text-[#111111] tracking-[-1px] leading-[40px] whitespace-pre-wrap text-left">
-            Create
+            Edit
             <br />
             Vocabulary
           </h1>
@@ -189,6 +182,7 @@ const CreateVocabulary: NextPage = () => {
                 Name
               </h1>
               <input
+                value={VocaSetting.name}
                 onChange={onNameChange}
                 placeholder="Write the name"
                 className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[180px] h-[30px] absolute left-[140px] top-[20px] rounded-[10px]"
@@ -199,6 +193,7 @@ const CreateVocabulary: NextPage = () => {
                 Description
               </h1>
               <input
+                value={VocaSetting.description}
                 onChange={onVocaDescriptionChange}
                 placeholder="Write the description"
                 className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[180px] h-[30px] absolute left-[140px] top-[65px] rounded-[10px] text-left"
@@ -215,12 +210,13 @@ const CreateVocabulary: NextPage = () => {
             </h1>
           </div>
 
-          {words.map((_, index) => (
+          {words.map((element, index) => (
             <div
               key={index}
               className="relative w-[342px] h-[100px] bg-[#ffffff] rounded-[10px] border-[1px] border-solid border-[#222] mt-2 flex justify-start items-start p-3 flex-col"
             >
               <input
+                value={element.word}
                 onChange={(e) => onWordChange(e, index)}
                 placeholder="Write the word"
                 className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[130px] h-[30px] rounded-[10px] text-left"
@@ -230,6 +226,7 @@ const CreateVocabulary: NextPage = () => {
                   Description
                 </h1>
                 <input
+                  value={element.description}
                   onChange={(e) => onDescriptionChange(e, index)}
                   placeholder="Write the description"
                   className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[185px] h-[30px] rounded-[10px] text-left mt-5"
@@ -257,11 +254,11 @@ const CreateVocabulary: NextPage = () => {
           ))}
 
           <button
-            onClick={onMakeButtonClick}
+            onClick={onSaveButtonClick}
             className="mt-10 w-[342px] items-center appearance-none bg-[#FCFCFD] rounded-[4px] border-[0px] shadow-lg  box-border text-[#36395A] cursor-pointer inline-flex h-[48px] justify-center leading-[1px]  list-none px-[16px] relative text-left  transition-shadow duration-[.15s] select-none will-change-transform text-[18px] focus:outline-none"
             role="button"
           >
-            Make
+            Save
           </button>
         </div>
       </main>
@@ -273,4 +270,4 @@ const CreateVocabulary: NextPage = () => {
   );
 };
 
-export default CreateVocabulary;
+export default EditVocabulary;

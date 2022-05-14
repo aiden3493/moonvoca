@@ -78,8 +78,8 @@ const Home: NextPage = () => {
         {
           VocaName: datas.VocaName,
           VocaDescription: datas.VocaDescription,
-          wordNum: datas.wordNum,
           words: datas.words,
+          wordNum: datas.wordNum,
         },
       ];
     }
@@ -117,7 +117,8 @@ const Home: NextPage = () => {
               index={index}
               name={voca.VocaName}
               description={voca.VocaDescription}
-              words={voca.wordNum}
+              words={voca.words}
+              wordsNum={voca.wordNum}
               handleDeleteVocabulary={handleDeleteVocabulary}
             />
           ))}
