@@ -4,6 +4,9 @@ import Footer from "../components/footer";
 import VocabularyBox from "../components/vocabularyBox";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import DeleteVocabularyModal from "../components/deleteVocabularyModal";
+import LearnVocavularyModal from "../components/learnVocabularyModal";
+import Router from "next/router";
 
 const Home: NextPage = () => {
   type Vocabulary = {
@@ -60,6 +63,75 @@ const Home: NextPage = () => {
 
     setVoca(data);
     setDeleteVocabularyModal(false);
+  };
+
+  const [learnVocabularyModal, setLearnVocabularyModal] =
+    useState<boolean>(false);
+
+  const [currentLearnVocabulary, setCurrentLearnVocabulary] =
+    useState<String>();
+
+  const [
+    currentLearnVocabularyDescription,
+    setCurrentLearnVocabularyDescription,
+  ] = useState<String>();
+
+  const [currentLearnVocabularyWordsNum, setCurrentLearnVocabularyWordsNum] =
+    useState<Number>();
+
+  const [currentLearnVocabularyIndex, setCurrentLearnVocabularyIndex] =
+    useState<Number>();
+
+  const handleLearnVocabulary = (
+    vocaName: String,
+    VocaDescription: String,
+    wordsNum: Number,
+    index: Number
+  ) => {
+    setLearnVocabularyModal(true);
+    setCurrentLearnVocabulary(vocaName);
+    setCurrentLearnVocabularyDescription(VocaDescription);
+    setCurrentLearnVocabularyWordsNum(wordsNum);
+    setCurrentLearnVocabularyIndex(index);
+  };
+
+  const learnVocabulary = (
+    name: string,
+    description: string,
+    index: number,
+    MODE: string
+  ) => {
+    if (MODE === "EN") {
+      Router.push({
+        pathname: "/learn/EN",
+        query: {
+          name,
+          description,
+          index,
+          MODE,
+        },
+      });
+    } else if (MODE === "KR") {
+      Router.push({
+        pathname: "/learn/KR",
+        query: {
+          name,
+          description,
+          index,
+          MODE,
+        },
+      });
+    } else {
+      Router.push({
+        pathname: "/learn/MIX",
+        query: {
+          name,
+          description,
+          index,
+          MODE,
+        },
+      });
+    }
   };
 
   useEffect(() => {
@@ -120,39 +192,29 @@ const Home: NextPage = () => {
               words={voca.words}
               wordsNum={voca.wordNum}
               handleDeleteVocabulary={handleDeleteVocabulary}
+              handleLearnVocavulary={handleLearnVocabulary}
             />
           ))}
 
           {deleteVocabularyModal ? (
-            <div className="absolute flex justify-center items-center w-[340px] h-screen top-0 backdrop-blur-[2px]">
-              <div className="top-[20%] w-full flex justify-center items-center">
-                <div className="bg-white flex justify-center items-center flex-col w-72 rounded-lg shadow-xl h-auto p-2 py-3">
-                  <h2 className="text-base mt-5 mx-4 text-gray-400 text-center">
-                    Would you delete this vocabulary?
-                  </h2>
-                  <div className="bg-gray-100 p-2 rounded-md mt-3 shadow-lg">
-                    <h2 className="text-xl mt-1">{currentDeleteVocabulary}</h2>
-                  </div>
-                  <div className="space-x-2 mt-5">
-                    <button
-                      className=" cursor-pointer my-5 w-auto px-8 h-10 bg-green-400 text-white rounded-md shadow hover:shadow-lg"
-                      onClick={() =>
-                        deleteVocabulary(`${currentDeleteVocabulary}`)
-                      }
-                    >
-                      Confirm
-                    </button>
+            <DeleteVocabularyModal
+              currentDeleteVocabulary={currentDeleteVocabulary}
+              deleteVocabulary={deleteVocabulary}
+              setDeleteVocabularyModal={setDeleteVocabularyModal}
+            />
+          ) : null}
 
-                    <button
-                      className=" cursor-pointer my-5 w-auto px-8 h-10 bg-red-500 text-white rounded-md shadow hover:shadow-lg"
-                      onClick={() => setDeleteVocabularyModal(false)}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {learnVocabularyModal ? (
+            <LearnVocavularyModal
+              currentLearnVocabulary={currentLearnVocabulary}
+              currentLearnVocabularyDescription={
+                currentLearnVocabularyDescription
+              }
+              currentLearnVocabularyWordsNum={currentLearnVocabularyWordsNum}
+              setLearnVocabularyModal={setLearnVocabularyModal}
+              learnVocabulary={learnVocabulary}
+              index={currentLearnVocabularyIndex}
+            />
           ) : null}
         </div>
       </main>

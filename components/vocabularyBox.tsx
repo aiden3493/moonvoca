@@ -14,7 +14,7 @@ export default function VocabularyBox(props: any) {
   ];
 
   const editVocabulary = (index: number) => {
-    Router.replace({
+    Router.push({
       pathname: "/edit",
       query: {
         name: props.name,
@@ -80,7 +80,17 @@ export default function VocabularyBox(props: any) {
         </svg>
       </div>
 
-      <div className="cursor-pointer flex justify-center items-center w-[92px] h-[33px] absolute bg-[#ffffff] left-[235px] top-[95px] rounded-[10px]">
+      <div
+        onClick={() =>
+          props.handleLearnVocavulary(
+            props.name,
+            props.description,
+            props.wordsNum,
+            props.index
+          )
+        }
+        className="cursor-pointer flex justify-center items-center w-[92px] h-[33px] absolute bg-[#ffffff] left-[235px] top-[95px] rounded-[10px]"
+      >
         <h1 className="text-[#44ccff] text-[18px] mt-1">Learn</h1>
       </div>
     </div>

@@ -7,15 +7,18 @@ import Router, { useRouter } from "next/router";
 const EditVocabulary: NextPage = () => {
   const query = useRouter().query;
 
-  let wordsQuery;
-  const localStorage = window.localStorage;
-  const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
-  wordsQuery = StorageData[`${query.index}`].words;
-
   type word = {
     word: string;
     description: string;
   };
+
+  const [words, setWords] = useState<word[]>([]);
+
+  useEffect(() => {
+    const localStorage = window.localStorage;
+    const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
+    setWords(StorageData[`${query.index}`].words);
+  }, [query.index]);
 
   type mainSet = {
     name: string;
@@ -26,7 +29,6 @@ const EditVocabulary: NextPage = () => {
     name: `${query.name}`,
     description: `${query.description}`,
   });
-  const [words, setWords] = useState<word[]>(wordsQuery);
 
   const addWord = (e: any) => {
     e.preventDefault();

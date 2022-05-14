@@ -88,17 +88,17 @@ const CreateVocabulary: NextPage = () => {
         return;
       }
     } else if (
-      VocaSetting.name.length > 15 ||
-      VocaSetting.description.length > 15
+      VocaSetting.name.length > 14 ||
+      VocaSetting.description.length > 14
     ) {
-      if (VocaSetting.name.length > 15 && VocaSetting.description.length > 15) {
-        alert("Please fill in less than 15 characters. : Name and Description");
+      if (VocaSetting.name.length > 14 && VocaSetting.description.length > 14) {
+        alert("Please fill in less than 14 characters. : Name and Description");
         return;
-      } else if (VocaSetting.name.length > 15) {
-        alert("Please fill in less than 15 characters. : Name");
+      } else if (VocaSetting.name.length > 14) {
+        alert("Please fill in less than 14 characters. : Name");
         return;
       } else {
-        alert("Please fill in less than 15 characters. : Description");
+        alert("Please fill in less than 14 characters. : Description");
         return;
       }
     }
@@ -139,7 +139,6 @@ const CreateVocabulary: NextPage = () => {
 
   const onMakeButtonClick = (e: any) => {
     e.preventDefault();
-    console.log(words);
 
     checkSettings() ? makeVoca() : null;
   };
@@ -183,9 +182,9 @@ const CreateVocabulary: NextPage = () => {
             Vocabulary
           </h1>
 
-          <div className="relative w-[342px] h-[115px] bg-[#ffffff] rounded-[20px] mt-5 border-solid border-[1px] border-[#222]">
+          <div className="relative w-[342px] h-[114px] bg-[#ffffff] rounded-[20px] mt-5 border-solid border-[1px] border-[#222]">
             <div className="">
-              <h1 className="left-[15px] top-[35px] absolute whitespace-pre-wrap text-[#111111] text-[20px] leading-[1px] tracking-[-1px]">
+              <h1 className="left-[14px] top-[35px] absolute whitespace-pre-wrap text-[#111111] text-[20px] leading-[1px] tracking-[-1px]">
                 Name
               </h1>
               <input
@@ -195,7 +194,7 @@ const CreateVocabulary: NextPage = () => {
               />
             </div>
             <div className="">
-              <h1 className="left-[15px] top-[80px] absolute whitespace-pre-wrap text-[#111111] text-[20px] leading-[1px] tracking-[-1px]">
+              <h1 className="left-[14px] top-[80px] absolute whitespace-pre-wrap text-[#111111] text-[20px] leading-[1px] tracking-[-1px]">
                 Description
               </h1>
               <input
@@ -258,7 +257,7 @@ const CreateVocabulary: NextPage = () => {
 
           <button
             onClick={onMakeButtonClick}
-            className="mt-10 w-[342px] items-center appearance-none bg-[#FCFCFD] rounded-[4px] border-[0px] shadow-lg  box-border text-[#36395A] cursor-pointer inline-flex h-[48px] justify-center leading-[1px]  list-none px-[16px] relative text-left  transition-shadow duration-[.15s] select-none will-change-transform text-[18px] focus:outline-none"
+            className="mt-10 w-[342px] items-center appearance-none bg-[#FCFCFD] rounded-[4px] border-[0px] shadow-lg  box-border text-[#36395A] cursor-pointer inline-flex h-[48px] justify-center leading-[1px]  list-none px-[16px] relative text-left  transition-shadow duration-[.14s] select-none will-change-transform text-[18px] focus:outline-none"
             role="button"
           >
             Make
