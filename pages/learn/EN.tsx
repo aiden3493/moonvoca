@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Router from "next/router";
 import Footer from "../../components/footer";
 import ENWordTest from "../../components/ENwordTest";
+import EndLearnModal from "../../components/endLearnModal";
 
 const Learn: NextPage = () => {
   const query = useRouter().query;
@@ -19,17 +20,22 @@ const Learn: NextPage = () => {
   useEffect(() => {
     const localStorage = window.localStorage;
     const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
-    setWords(StorageData[`${query.index}`].words);
+
+    setWords(StorageData[parseInt(`${query.index}`)].words);
   }, [query.index]);
 
   const [wordIndex, setWordIndex] = useState<number>(0);
+  const [showEndModal, setShowEndModal] = useState<boolean>(false);
 
   const onBeforeClick = () => {
     if (wordIndex === 0) return;
     setWordIndex(wordIndex - 1);
   };
   const onNextClick = () => {
-    if (wordIndex === words.length - 1) return;
+    if (wordIndex === words.length - 1) {
+      setShowEndModal(true);
+      return;
+    }
     setWordIndex(wordIndex + 1);
   };
 
@@ -69,7 +75,11 @@ const Learn: NextPage = () => {
           <div className="flex items-center justify-between w-[320px]">
             <div
               onClick={onBeforeClick}
-              className="w-[100px] h-[60px] mt-[50px] rounded-[10px] shadow-xl flex justify-center items-center"
+              className={
+                wordIndex === 0
+                  ? "w-[100px] opacity-40 h-[60px] mt-[50px] rounded-[10px] shadow-xl flex justify-center items-center"
+                  : "w-[100px] h-[60px] mt-[50px] rounded-[10px] shadow-xl flex justify-center items-center"
+              }
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +98,11 @@ const Learn: NextPage = () => {
             </div>
             <div
               onClick={onNextClick}
-              className="w-[100px] h-[60px] mt-[50px] rounded-[10px] shadow-xl flex justify-center items-center"
+              className={
+                wordIndex + 1 === words.length
+                  ? "w-[100px] h-[60px] mt-[50px] bg-green-200 rounded-[10px] shadow-xl flex justify-center items-center"
+                  : "w-[100px] h-[60px] mt-[50px] rounded-[10px] shadow-xl flex justify-center items-center"
+              }
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -106,9 +120,15 @@ const Learn: NextPage = () => {
               </svg>
             </div>
           </div>
+
+          {showEndModal ? (
+            <EndLearnModal
+              currentLearnVocabulary={query.name}
+              setShowEndModal={setShowEndModal}
+            />
+          ) : null}
         </div>
       </main>
-
       <footer className=" static flex flex-1 p-[2rem] border-t-[#eaeaea] border-t border-solid justify-center items-center">
         <Footer />
       </footer>

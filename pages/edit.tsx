@@ -264,7 +264,6 @@ const EditVocabulary: NextPage = () => {
           </button>
         </div>
       </main>
-
       <footer className=" static flex flex-1 p-[2rem] border-t-[#eaeaea] border-t border-solid justify-center items-center">
         <Footer />
       </footer>

@@ -107,7 +107,7 @@ const Home: NextPage = () => {
         query: {
           name,
           description,
-          index,
+          index: index,
           MODE,
         },
       });
@@ -170,9 +170,9 @@ const Home: NextPage = () => {
       <main className="w-full h-full bg-black flex items-center flex-col">
         <div className="w-[390px] h-full bg-white pt-[56px] px-[24px] pb-[24px] overflow-scroll">
           <h1 className="text-[40px] text-[#111111] tracking-[-1px] leading-[40px] whitespace-pre-wrap text-left">
-            Moon
+            Test
             <br />
-            JunSik
+            Test
           </h1>
 
           <Link href="/createVocabulary" passHref>
@@ -218,7 +218,6 @@ const Home: NextPage = () => {
           ) : null}
         </div>
       </main>
-
       <footer className=" static flex flex-1 p-[2rem] border-t-[#eaeaea] border-t border-solid justify-center items-center">
         <Footer />
       </footer>
