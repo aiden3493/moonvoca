@@ -1,14 +1,29 @@
 import { useEffect, useState } from "react";
 
 export default function ENWordTest(props: any) {
-  const [star, setStar] = useState<boolean>(false);
-
   const [showMeaning, setShowMeaning] = useState<boolean>(false);
 
   const wordData = props.words;
 
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
+
+  const whenStarClick = () => {
+    const staredWords: number[] = [...props.staredWords];
+    const stared = props.stared;
+
+    props.setStared(!stared);
+
+    if (!stared) {
+      staredWords.push(props.wordIndex);
+      props.setStaredWords([...staredWords]);
+
+      return;
+    }
+    props.setStaredWords([
+      ...staredWords.filter((index: number) => index !== props.wordIndex),
+    ]);
+  };
 
   useEffect(() => {
     setShowMeaning(false);
@@ -25,10 +40,10 @@ export default function ENWordTest(props: any) {
   return (
     <div className=" relative">
       <div
-        onClick={() => setStar(!star)}
+        onClick={whenStarClick}
         className="z-50 cursor-pointer absolute w-[50px] h-[50px] top-[100px] right-[15px] flex justify-center items-center"
       >
-        {star ? (
+        {props.stared ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8"

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Router from "next/router";
 import Footer from "../../components/footer";
+import EndLearnModal from "../../components/endLearnModal";
 import MIXWordTest from "../../components/MIXwordTest";
 
 const Learn: NextPage = () => {
@@ -16,23 +17,71 @@ const Learn: NextPage = () => {
 
   const [words, setWords] = useState<word[]>([]);
 
-  useEffect(() => {
-    const localStorage = window.localStorage;
-    const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
-
-    setWords(StorageData[parseInt(`${query.index}`)].words);
-  }, [query.index]);
+  const [staredWords, setStaredWords] = useState<number[]>([]);
+  const [stared, setStared] = useState<boolean>(false);
 
   const [wordIndex, setWordIndex] = useState<number>(0);
 
+  const [showEndModal, setShowEndModal] = useState<boolean>(false);
+
   const onBeforeClick = () => {
-    if (wordIndex === 0) return;
+    if (wordIndex === 0) {
+      return;
+    } else {
+      const CalcedWordIndex = wordIndex - 1;
+
+      for (const i of staredWords) {
+        if (CalcedWordIndex === i) {
+          setStared(true);
+          break;
+        } else {
+          setStared(false);
+        }
+      }
+    }
     setWordIndex(wordIndex - 1);
   };
+
   const onNextClick = () => {
-    if (wordIndex === words.length - 1) return;
+    if (wordIndex === words.length - 1) {
+      setShowEndModal(true);
+      return;
+    } else {
+      const CalcedWordIndex = wordIndex + 1;
+      for (const i of staredWords) {
+        if (CalcedWordIndex === i) {
+          setStared(true);
+          break;
+        } else {
+          setStared(false);
+        }
+      }
+    }
     setWordIndex(wordIndex + 1);
   };
+
+  useEffect(() => {
+    setWords([]);
+    setShowEndModal(false);
+    setStared(false);
+    setWordIndex(0);
+    setStaredWords([]);
+    const localStorage = window.localStorage;
+    const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
+    if (query.staredWords) {
+      const staredWords = [];
+      console.log(`${query.staredWords}`.split(","));
+
+      for (const i of `${query.staredWords}`.split(",")) {
+        staredWords.push(StorageData[parseInt(`${query.index}`)].words[i]);
+      }
+
+      setWords(staredWords);
+      return;
+    }
+
+    setWords(StorageData[parseInt(`${query.index}`)].words);
+  }, [query.index, query.staredWords]);
 
   return (
     <div className="w-full h-screen">
@@ -66,7 +115,14 @@ const Learn: NextPage = () => {
 
           <h1 className="-mt-[23px] text-[20px]">{query.name}</h1>
 
-          <MIXWordTest words={words} wordIndex={wordIndex} />
+          <MIXWordTest
+            words={words}
+            wordIndex={wordIndex}
+            staredWords={staredWords}
+            setStaredWords={setStaredWords}
+            stared={stared}
+            setStared={setStared}
+          />
           <div className="flex items-center justify-between w-[320px]">
             <div
               onClick={onBeforeClick}
@@ -115,6 +171,14 @@ const Learn: NextPage = () => {
               </svg>
             </div>
           </div>
+
+          {showEndModal ? (
+            <EndLearnModal
+              setShowEndModal={setShowEndModal}
+              staredWords={staredWords}
+              query={query}
+            />
+          ) : null}
         </div>
       </main>
       <footer className=" static flex flex-1 p-[2rem] border-t-[#eaeaea] border-t border-solid justify-center items-center">
