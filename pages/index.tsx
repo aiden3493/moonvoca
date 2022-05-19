@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import DeleteVocabularyModal from "../components/deleteVocabularyModal";
 import LearnVocavularyModal from "../components/learnVocabularyModal";
+import ShareVocabularyModal from "../components/shareVocabularyModal";
 import Router from "next/router";
 
 const Home: NextPage = () => {
@@ -25,8 +26,8 @@ const Home: NextPage = () => {
     useState<String>("");
 
   const handleDeleteVocabulary = (vocaName: String) => {
-    setDeleteVocabularyModal(true);
     setCurrentDeleteVocabulary(vocaName);
+    setDeleteVocabularyModal(true);
   };
 
   const deleteVocabulary = (name: string) => {
@@ -134,6 +135,36 @@ const Home: NextPage = () => {
     }
   };
 
+  const [shareVocabularyModal, setShareVocabularyModal] =
+    useState<boolean>(false);
+
+  const [currentShareVocabulary, setCurrentShareVocabulary] =
+    useState<String>();
+
+  const [
+    currentShareVocabularyDescription,
+    setCurrentShareVocabularyDescription,
+  ] = useState<String>();
+
+  const [currentShareVocabularyWordsNum, setCurrentShareVocabularyWordsNum] =
+    useState<Number>();
+
+  const [currentShareVocabularyWords, setCurrentShareVocabularyWords] =
+    useState<object[]>([]);
+
+  const handleShareVocabulary = (
+    vocaName: String,
+    VocaDescription: String,
+    wordsNum: Number,
+    words: object[]
+  ) => {
+    setShareVocabularyModal(true);
+    setCurrentShareVocabulary(vocaName);
+    setCurrentShareVocabularyDescription(VocaDescription);
+    setCurrentShareVocabularyWordsNum(wordsNum);
+    setCurrentShareVocabularyWords(words);
+  };
+
   useEffect(() => {
     const localStorage = window.localStorage;
     const StorageData = localStorage.getItem("Vocabularys")
@@ -183,6 +214,28 @@ const Home: NextPage = () => {
             </div>
           </Link>
 
+          <Link href="/vocabularyStore" passHref>
+            <div className=" cursor-pointer w-[342px] h-[50px] bg-[#ffffff] rounded-[10px] mt-2 flex justify-center items-center border-black border-[1px] border-solid">
+              <h1 className="mr-1 mt-1 whitespace-pre text-black text-[18px] leading-[1px] tracking-[-1px]">
+                DownLoad
+              </h1>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mt-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                />
+              </svg>
+            </div>
+          </Link>
+
           {Voca.map((voca, index) => (
             <VocabularyBox
               key={index}
@@ -193,6 +246,7 @@ const Home: NextPage = () => {
               wordsNum={voca.wordNum}
               handleDeleteVocabulary={handleDeleteVocabulary}
               handleLearnVocavulary={handleLearnVocabulary}
+              handleShareVocabulary={handleShareVocabulary}
             />
           ))}
 
@@ -214,6 +268,18 @@ const Home: NextPage = () => {
               setLearnVocabularyModal={setLearnVocabularyModal}
               learnVocabulary={learnVocabulary}
               index={currentLearnVocabularyIndex}
+            />
+          ) : null}
+
+          {shareVocabularyModal ? (
+            <ShareVocabularyModal
+              setShareVocabularyModal={setShareVocabularyModal}
+              currentShareVocabulary={currentShareVocabulary}
+              currentShareVocabularyDescription={
+                currentShareVocabularyDescription
+              }
+              currentShareVocabularyWords={currentShareVocabularyWords}
+              currentShareVocabularyWordsNum={currentShareVocabularyWordsNum}
             />
           ) : null}
         </div>
