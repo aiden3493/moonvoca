@@ -2,9 +2,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Footer from "../components/footer";
 import React, { useEffect, useState } from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
+import DownloadVocabularyBox from "../components/downloadVocabularyBox";
 
-const EditVocabulary: NextPage = () => {
+const VocabularyStore: NextPage = () => {
   const [hits, setHits] = useState<any[]>([]);
 
   const search = async (event: any) => {
@@ -12,13 +13,26 @@ const EditVocabulary: NextPage = () => {
 
     if (q.length > 2) {
       const params = new URLSearchParams({ q });
+
       const res = await fetch("api/search?" + params);
 
       const result = await res.json();
-      console.log(result);
 
-      //   setHits(result[""]);
+      setHits(result["vocabularys"]);
     }
+    if (q.length === 0) {
+      fetchWholeData();
+    }
+  };
+
+  const fetchWholeData = async () => {
+    const res = await fetch("api/wholeVocabulary");
+
+    const result = await res.json();
+    console.log(result);
+
+    setHits(result["vocabularys"]);
+    return;
   };
 
   return (
@@ -59,9 +73,13 @@ const EditVocabulary: NextPage = () => {
             className="pl-5 w-full h-[40px] bg-whites mt-5 rounded-[10px] border-black border-solid border-[1px]"
           />
 
-          <ul>
-            {hits.map((hit: any) => (
-              <li key={hit.entityID}>{hit.make}</li>
+          <ul className="w-full mt-5 h-full">
+            {hits.map((hit: any, index) => (
+              <DownloadVocabularyBox
+                key={hit.entityID}
+                data={hit}
+                index={index}
+              />
             ))}
           </ul>
         </div>
@@ -73,4 +91,4 @@ const EditVocabulary: NextPage = () => {
   );
 };
 
-export default EditVocabulary;
+export default VocabularyStore;
