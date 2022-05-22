@@ -22,7 +22,7 @@ const VocabularyStore: NextPage = () => {
   const search = async (event: any) => {
     const q = event.target.value;
 
-    if (q.length > 2) {
+    if (q.length >= 1) {
       const params = new URLSearchParams({ q });
 
       const res = await fetch("api/search?" + params);
