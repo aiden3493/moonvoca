@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.6",
+    "@sentry/nextjs": "^6.19.7",
     "framer-motion": "^6.3.3",
     "heroicons": "^1.0.6",
     "next": "12.1.5",

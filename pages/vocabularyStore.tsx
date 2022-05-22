@@ -4,8 +4,19 @@ import Footer from "../components/footer";
 import React, { useEffect, useState } from "react";
 import Router from "next/router";
 import DownloadVocabularyBox from "../components/downloadVocabularyBox";
+import DownloadVocabularyModal from "../components/downloadVocabularyModal";
 
 const VocabularyStore: NextPage = () => {
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+  const [pushData, setPushData] = useState<object>({});
+
+  const [currentDownloadVocabulary, setCurrentDownloadVocabulary] =
+    useState<string>("");
+
+  const handleDownloadVocabulary = (vocaName: string) => {
+    setCurrentDownloadVocabulary(vocaName);
+  };
+
   const [hits, setHits] = useState<any[]>([]);
 
   const search = async (event: any) => {
@@ -20,19 +31,6 @@ const VocabularyStore: NextPage = () => {
 
       setHits(result["vocabularys"]);
     }
-    if (q.length === 0) {
-      fetchWholeData();
-    }
-  };
-
-  const fetchWholeData = async () => {
-    const res = await fetch("api/wholeVocabulary");
-
-    const result = await res.json();
-    console.log(result);
-
-    setHits(result["vocabularys"]);
-    return;
   };
 
   return (
@@ -70,19 +68,32 @@ const VocabularyStore: NextPage = () => {
           </h1>
           <input
             onChange={search}
-            className="pl-5 w-full h-[40px] bg-whites mt-5 rounded-[10px] border-black border-solid border-[1px]"
+            className="outline-none pl-5 w-full h-[40px] bg-whites mt-5 rounded-[10px] border-black border-solid border-[1px]"
           />
 
           <ul className="w-full mt-5 h-full">
-            {hits.map((hit: any, index) => (
-              <DownloadVocabularyBox
-                key={hit.entityID}
-                data={hit}
-                index={index}
-              />
+            {hits.map((hit, index) => (
+              <li key={hit.entityId}>
+                <DownloadVocabularyBox
+                  data={hit}
+                  index={index}
+                  setShowDownloadModal={setShowDownloadModal}
+                  handleDownloadVocabulary={handleDownloadVocabulary}
+                  setPushData={setPushData}
+                  showDownloadModal={showDownloadModal}
+                />
+              </li>
             ))}
           </ul>
         </div>
+
+        {showDownloadModal ? (
+          <DownloadVocabularyModal
+            setShowDownloadModal={setShowDownloadModal}
+            currentDownloadVocabulary={currentDownloadVocabulary}
+            pushData={pushData}
+          />
+        ) : null}
       </main>
       <footer className=" static flex flex-1 p-[2rem] border-t-[#eaeaea] border-t border-solid justify-center items-center">
         <Footer />

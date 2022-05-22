@@ -238,7 +238,7 @@ const Home: NextPage = () => {
 
           {Voca.map((voca, index) => (
             <VocabularyBox
-              key={index}
+              key={index + 1}
               index={index}
               name={voca.VocaName}
               description={voca.VocaDescription}

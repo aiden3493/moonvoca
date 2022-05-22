@@ -17,7 +17,8 @@ const EditVocabulary: NextPage = () => {
   useEffect(() => {
     const localStorage = window.localStorage;
     const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
-    setWords(StorageData[`${query.index}`].words);
+
+    setWords(StorageData[`${query.index}`]["words"]);
   }, [query.index]);
 
   type mainSet = {

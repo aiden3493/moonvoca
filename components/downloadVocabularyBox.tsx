@@ -1,32 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function DownloadVocabularyBox(props: any) {
   //get props from parent component of index, color, name, description, words
 
   const [downloaded, setDownloaded] = useState(false);
 
-  const download = () => {
+  const [pushData, setPushData] = useState({});
+
+  const onDownloadClick = () => {
+    props.handleDownloadVocabulary(props.data.name);
+    props.setPushData(pushData);
+    props.setShowDownloadModal(true);
+  };
+
+  useEffect(() => {
     const localStorage = window.localStorage;
 
     const data = {
       VocaName: props.data.name,
       VocaDescription: props.data.description,
       wordNum: props.data.wordsNum,
-      words: props.data.words,
+      words: JSON.parse(props.data.words),
     };
 
     const currentData = localStorage.getItem("Vocabularys")
       ? JSON.parse(`${localStorage.getItem("Vocabularys")}`)
       : {};
 
+    for (const key in currentData) {
+      if (JSON.stringify(currentData[key]) === JSON.stringify(data)) {
+        setDownloaded(true);
+        return;
+      }
+    }
+
     const pushData = {
       ...currentData,
       [Object.keys(currentData).length]: data,
     };
-
-    localStorage.setItem("Vocabularys", JSON.stringify(pushData));
-    setDownloaded(true);
-  };
+    setPushData(pushData);
+  }, [props.data, props.showDownloadModal]);
 
   const VOCABULARY_BACKGROUND_COLOR = [
     "#44ccff",
@@ -43,25 +56,24 @@ export default function DownloadVocabularyBox(props: any) {
       : VOCABULARY_BACKGROUND_COLOR[5];
 
   return (
-    <li
-      key={props.key}
+    <div
       className="relative w-full h-[140px] mt-2 rounded-[10px]"
       style={{ backgroundColor: `${color}` }}
     >
-      <div className="absolute left-4 top-[1.65rem] w-[289px] h-[87px] text-[24px] tracking-[1px] leading-[25px] text-[#ffffff] whitespace-pre-wrap z-[9999]">
+      <div className="absolute left-4 top-[1.65rem] w-[289px] h-[87px] text-[24px] tracking-[1px] leading-[25px] text-[#ffffff] whitespace-pre-wrap">
         <h1>{props.data.name}</h1>
         <h1>{props.data.description}</h1>
         <h1>{`${props.data.wordsNum} words`}</h1>
       </div>
 
       <div
-        onClick={download}
-        className="cursor-pointer flex justify-center items-center w-[92px] h-[33px] absolute bg-[#ffffff] left-[235px] top-[95px] rounded-[10px]"
+        onClick={onDownloadClick}
+        className=" z-[9999] cursor-pointer flex justify-center items-center pt-1 w-[92px] h-[33px] absolute bg-[#ffffff] left-[235px] top-[95px] rounded-[10px]"
       >
-        <h1 className="text-[#44ccff] text-[13px] mt-1">
+        <h1 className="text-[#44ccff] text-[12px]">
           {downloaded ? "downloaded" : "download"}
         </h1>
       </div>
-    </li>
+    </div>
   );
 }
