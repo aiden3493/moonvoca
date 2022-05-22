@@ -91,8 +91,8 @@ const Learn: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full h-full bg-black flex items-center flex-col">
-        <div className="w-[390px] h-full bg-white pt-[56px] px-[24px] pb-[24px] overflow-scroll flex flex-col items-center">
+      <main className=" w-full h-full bg-white flex items-center flex-col">
+        <div className="relative cursor-pointer w-[390px] h-full bg-white pt-[56px] px-[24px] pb-[24px] overflow-scroll flex flex-col items-center">
           <div
             onClick={() => Router.push("/")}
             className="w-[30px] h-[30px] flex justify-center items-center absolute left-[30px] top-[30px]"
