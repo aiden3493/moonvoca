@@ -70,7 +70,6 @@ const Learn: NextPage = () => {
     const StorageData = JSON.parse(`${localStorage.getItem("Vocabularys")}`);
     if (query.staredWords) {
       const staredWords = [];
-      console.log(`${query.staredWords}`.split(","));
 
       for (const i of `${query.staredWords}`.split(",")) {
         staredWords.push(StorageData[parseInt(`${query.index}`)].words[i]);
@@ -80,7 +79,11 @@ const Learn: NextPage = () => {
       return;
     }
 
-    setWords(StorageData[parseInt(`${query.index}`)].words);
+    if (query.index) {
+      setWords(StorageData[parseInt(`${query.index}`)].words);
+    } else {
+      setWords([{ word: "쿼리가 존재하지 않습니다", description: "" }]);
+    }
   }, [query.index, query.staredWords]);
 
   return (
@@ -95,7 +98,7 @@ const Learn: NextPage = () => {
         <div className="relative w-[390px] h-full bg-white pt-[56px] px-[24px] pb-[24px] overflow-scroll flex flex-col items-center">
           <div
             onClick={() => Router.push("/")}
-            className="w-[30px] h-[30px] flex justify-center items-center absolute left-[30px] top-[30px]"
+            className="cursor-pointer w-[30px] h-[30px] flex justify-center items-center absolute left-[30px] top-[30px]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
