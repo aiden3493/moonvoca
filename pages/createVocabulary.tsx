@@ -189,7 +189,7 @@ const CreateVocabulary: NextPage = () => {
               <input
                 onChange={onNameChange}
                 placeholder="Write the name"
-                className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[180px] h-[30px] absolute left-[140px] top-[20px] rounded-[10px]"
+                className=" select-auto text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[180px] h-[30px] absolute left-[140px] top-[20px] rounded-[10px]"
               />
             </div>
             <div className="">
@@ -199,7 +199,7 @@ const CreateVocabulary: NextPage = () => {
               <input
                 onChange={onVocaDescriptionChange}
                 placeholder="Write the description"
-                className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[180px] h-[30px] absolute left-[140px] top-[65px] rounded-[10px] text-left"
+                className=" select-auto text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[180px] h-[30px] absolute left-[140px] top-[65px] rounded-[10px] text-left"
               />
             </div>
           </div>
@@ -221,7 +221,7 @@ const CreateVocabulary: NextPage = () => {
               <input
                 onChange={(e) => onWordChange(e, index)}
                 placeholder="Write the word"
-                className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[130px] h-[30px] rounded-[10px] text-left"
+                className=" select-auto text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[130px] h-[30px] rounded-[10px] text-left"
               />
               <div className="flex items-center justify-start space-x-10 ml-1 mt-[-7px]">
                 <h1 className="whitespace-pre tracking-[-1px] leading-[1px] mt-5">
@@ -230,7 +230,7 @@ const CreateVocabulary: NextPage = () => {
                 <input
                   onChange={(e) => onDescriptionChange(e, index)}
                   placeholder="Write the description"
-                  className="text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[185px] h-[30px] rounded-[10px] text-left mt-5"
+                  className=" select-auto text-black pl-3 pt-[2.5px] text-[12px] outline-none bg-[#E6E6E6] w-[185px] h-[30px] rounded-[10px] text-left mt-5"
                 />
               </div>
 

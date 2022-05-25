@@ -68,7 +68,7 @@ const VocabularyStore: NextPage = () => {
           </h1>
           <input
             onChange={search}
-            className="outline-none pl-5 w-full h-[40px] bg-whites mt-5 rounded-[10px] border-black border-solid border-[1px]"
+            className="select-auto outline-none pl-5 w-full h-[40px] bg-whites mt-5 rounded-[10px] border-black border-solid border-[1px]"
           />
 
           <ul className="w-full mt-5 h-full">
