@@ -152,17 +152,22 @@ const Home: NextPage = () => {
   const [currentShareVocabularyWords, setCurrentShareVocabularyWords] =
     useState<object[]>([]);
 
+  const [currentShareVocabularyIsExist, setCurrentShareVocabularyIsExist] =
+    useState<boolean>();
+
   const handleShareVocabulary = (
     vocaName: String,
     VocaDescription: String,
     wordsNum: Number,
-    words: object[]
+    words: object[],
+    isExist: boolean
   ) => {
     setShareVocabularyModal(true);
     setCurrentShareVocabulary(vocaName);
     setCurrentShareVocabularyDescription(VocaDescription);
     setCurrentShareVocabularyWordsNum(wordsNum);
     setCurrentShareVocabularyWords(words);
+    setCurrentShareVocabularyIsExist(isExist);
   };
 
   useEffect(() => {
@@ -198,7 +203,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full h-full bg-white flex items-center flex-col">
+      <main className="w-full h-full bg-white flex flex-col items-center">
         <div className="w-[390px] h-full bg-white pt-[56px] px-[24px] pb-[24px] overflow-scroll">
           <h1 className="text-[40px] text-[#111111] tracking-[-1px] leading-[40px] whitespace-pre-wrap text-left">
             Moon
@@ -280,6 +285,7 @@ const Home: NextPage = () => {
               }
               currentShareVocabularyWords={currentShareVocabularyWords}
               currentShareVocabularyWordsNum={currentShareVocabularyWordsNum}
+              isExist={currentShareVocabularyIsExist}
             />
           ) : null}
         </div>

@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Footer from "../components/footer";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Router from "next/router";
 import DownloadVocabularyBox from "../components/downloadVocabularyBox";
 import DownloadVocabularyModal from "../components/downloadVocabularyModal";
@@ -9,6 +9,7 @@ import DownloadVocabularyModal from "../components/downloadVocabularyModal";
 const VocabularyStore: NextPage = () => {
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [pushData, setPushData] = useState<object>({});
+  const [downloaded, setDownloaded] = useState(false);
 
   const [currentDownloadVocabulary, setCurrentDownloadVocabulary] =
     useState<string>("");
@@ -79,6 +80,7 @@ const VocabularyStore: NextPage = () => {
                   setShowDownloadModal={setShowDownloadModal}
                   handleDownloadVocabulary={handleDownloadVocabulary}
                   setPushData={setPushData}
+                  setDownloaded={setDownloaded}
                   showDownloadModal={showDownloadModal}
                 />
               </li>
@@ -91,6 +93,7 @@ const VocabularyStore: NextPage = () => {
             setShowDownloadModal={setShowDownloadModal}
             currentDownloadVocabulary={currentDownloadVocabulary}
             pushData={pushData}
+            downloaded={downloaded}
           />
         ) : null}
       </main>

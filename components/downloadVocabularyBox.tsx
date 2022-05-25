@@ -10,6 +10,7 @@ export default function DownloadVocabularyBox(props: any) {
   const onDownloadClick = () => {
     props.handleDownloadVocabulary(props.data.name);
     props.setPushData(pushData);
+    props.setDownloaded(downloaded);
     props.setShowDownloadModal(true);
   };
 
@@ -68,7 +69,7 @@ export default function DownloadVocabularyBox(props: any) {
 
       <div
         onClick={onDownloadClick}
-        className=" z-[9999] cursor-pointer flex justify-center items-center pt-1 w-[92px] h-[33px] absolute bg-[#ffffff] left-[235px] top-[95px] rounded-[10px]"
+        className="cursor-pointer flex justify-center items-center pt-1 w-[92px] h-[33px] absolute bg-[#ffffff] left-[235px] top-[95px] rounded-[10px]"
       >
         <h1 className="text-[#44ccff] text-[12px]">
           {downloaded ? "downloaded" : "download"}

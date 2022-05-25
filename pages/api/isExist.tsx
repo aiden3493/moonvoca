@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { createVocabulary } from "../../lib/redis";
+import { checkIsExist } from "../../lib/redis";
 import { withSentry } from "@sentry/nextjs";
 
 export const config = {
@@ -9,8 +9,11 @@ export const config = {
 };
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const id = await createVocabulary(req.body);
-  res.status(200).json({ id });
+  const q = req.query.q;
+
+  const isExist = await checkIsExist(q);
+
+  res.status(200).json({ isExist });
 }
 
 export default withSentry(handler);

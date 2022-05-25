@@ -1,8 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Router from "next/router";
 
 export default function VocabularyBox(props: any) {
-  //get props from parent component of index, color, name, description, words
+  const [isExist, setIsExist] = useState<boolean>();
+
+  useEffect(() => {
+    const fetchIsExist = async (q: string) => {
+      const params = new URLSearchParams({ q });
+
+      const res = await fetch("api/isExist?" + params);
+
+      const result = await res.json();
+
+      const isExist: any[] = result["isExist"];
+
+      const match = isExist.findIndex(
+        (element: any) =>
+          element.name === props.name &&
+          element.description === props.description &&
+          element.words === JSON.stringify(props.words) &&
+          element.wordsNum === props.wordsNum
+      );
+
+      if (match === -1) {
+        setIsExist(false);
+        return;
+      } else {
+        setIsExist(true);
+        return;
+      }
+    };
+
+    fetchIsExist(props.name);
+  }, [props.name, props.description, props.words, props.wordsNum]);
 
   const VOCABULARY_BACKGROUND_COLOR = [
     "#44ccff",
@@ -66,7 +96,8 @@ export default function VocabularyBox(props: any) {
             props.name,
             props.description,
             props.wordsNum,
-            props.words
+            props.words,
+            isExist
           )
         }
         className="cursor-pointer flex justify-center items-center w-[33px] h-[33px] absolute bg-[#ffffff] left-[215px] top-[13px] rounded-[10px]"
