@@ -1,8 +1,6 @@
 import { useState } from "react";
 
 export default function ShareVocabularyModal(props: any) {
-  console.log(props.isExist);
-
   const [able, setAble] = useState(true);
 
   const shareVocabulary = async (e: any) => {
